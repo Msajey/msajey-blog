@@ -219,22 +219,62 @@
     }
 
     @media (max-width: 980px) {
-      .nav-inner, .content-area {
-        width: 95%;
-        padding-left: 130px;
-        padding-right: 16px;
+      .nav-bar {
+        height: auto;
+        min-height: 64px;
       }
-      .logo-wrap { width: 104px; height: 26px; top: 19px; }
+      .nav-inner {
+        width: 95%;
+        padding-left: 0;
+        padding-right: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+      .logo-wrap {
+        position: static;
+        width: 104px;
+        height: 26px;
+        margin-right: 8px;
+      }
+      .nav-item a {
+        padding: 0 14px;
+        line-height: 48px;
+        font-size: 16px;
+      }
+      .main-container {
+        padding-top: 120px;
+      }
+      .content-area { width: 95%; }
       .banner-wrapper { width: 95%; height: 280px; }
       .tool-grid { grid-template-columns: repeat(2, 1fr); }
-      .nav-item a { padding: 0 16px; font-size: 16px; }
     }
 
     @media (max-width: 600px) {
-      .nav-inner { padding-left: 96px; }
-      .logo-wrap { width: 83px; height: 21px; top: 21px; }
-      .tool-grid { grid-template-columns: 1fr; }
+      .nav-inner {
+        padding-left: 0;
+        padding-right: 8px;
+        justify-content: center;
+      }
+      .logo-wrap {
+        width: 83px;
+        height: 21px;
+        margin-right: 6px;
+      }
+      .nav-item a {
+        padding: 0 10px;
+        font-size: 14px;
+        line-height: 44px;
+      }
+      .main-container {
+        padding-top: 110px;
+      }
       .banner-wrapper { height: 180px; }
+      .tool-grid { grid-template-columns: 1fr; }
+      .section-header .title { font-size: 20px; }
     }
   </style>
 </head>
