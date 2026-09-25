@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>半成品</title>
+  <style>
+    /* ===== 全局重置 & 基础风格 ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f9f9f9;
+      color: #1a1a1a;
+      font-weight: 300;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding-top: 64px;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul, li {
+      list-style: none;
+    }
+
+    /* ===== 导航栏 ===== */
+    .nav-bar {
+      width: 100%;
+      height: 64px;
+      background-color: #FEC433;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+    }
+
+    .nav-inner {
+      width: 1180px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding-left: 0;   /* 关键：不偏移 */
+    }
+
+    /* Logo 绝对定位，浮在最左边 */
+    .logo-wrap {
+      position: absolute;
+      left: 0;
+      top: 19px;
+      width: 107px;
+      height: 26px;
+      display: block;
+    }
+
+    .logo-wrap img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* 第一个导航项（首页）左边距避开 Logo */
+    .nav-item:first-child {
+      margin-left: 128px;
+    }
+
+    .nav-item {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      transition: background 0.3s;
+    }
+
+    .nav-item a {
+      display: block;
+      line-height: 64px;
+      padding: 0 28px;
+      font-size: 18px;
+      font-weight: 500;
+      color: #ffffff;
+      letter-spacing: 0.56px;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background-color: #f6b206;
+    }
+
+    .nav-right-placeholder {
+      flex: 1;
+    }
+
+    /* ===== 主内容区域 ===== */
+    .main-container {
+      width: 1180px;
+      margin: 0 auto;
+      padding: 32px 0 80px;
+    }
+
+    /* ===== Banner ===== */
+    .banner-section {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    .banner-box {
+      width: 100%;
+      max-width: 1100px;
+      height: 380px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.15);
+      background-color: #eef2f6;
+      background-image: url('https://static.codemao.cn/986/whale/ba76610c-ad42-4162-a874-250b0c7a0d1a');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /* ===== 作品区域 ===== */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding: 0 4px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-icon {
+      width: 6px;
+      height: 28px;
+      background: #FEC433;
+      border-radius: 8px;
+    }
+
+    .section-text {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #1f2b38;
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px 18px;
+    }
+
+    .work-card {
+      background-color: #ffffff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .work-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 22px -8px rgba(0, 0, 0, 0.12);
+    }
+
+    .work-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background-color: #e9edf2;
+    }
+
+    .work-thumb-img {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.3s;
+    }
+
+    .work-card:hover .work-thumb-img {
+      transform: scale(1.04);
+    }
+
+    .work-card p {
+      padding: 10px 12px 12px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #1e2a3a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 0;
+      background: #fff;
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 1200px) {
+      .nav-inner,
+      .main-container {
+        width: 100%;
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      .nav-item:first-child {
+        margin-left: 128px;
+      }
+    }
+
+    @media (max-width: 1000px) {
+      .works-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .works-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .banner-box {
+        height: 280px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .works-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .nav-item a {
+        padding: 0 18px;
+        font-size: 16px;
+      }
+      .nav-item:first-child {
+        margin-left: 110px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== 顶部导航 ========== -->
+  <div class="nav-bar">
+    <div class="nav-inner">
+      <a href="#" class="logo-wrap">
+        <img src="https://static.codemao.cn/community/shequ_logo.png" alt="编程猫社区">
+      </a>
+
+      <div class="nav-item">
+        <a href="#">首页</a>
+      </div>
+
+      <div class="nav-item download-item">
+        <a id="downloadNavLink">下载</a>
+      </div>
+
+      <div class="nav-right-placeholder"></div>
+    </div>
+  </div>
+
+  <!-- ========== 主内容 ========== -->
+  <div class="main-container">
+    <div class="banner-section">
+      <div class="banner-box"></div>
+    </div>
+
+    <div class="works-section">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="section-icon"></span>
+          <span class="section-text">作品</span>
+        </div>
+      </div>
+
+      <div class="works-grid">
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/rJmixPB0d')"></div></div>
+          <p title="吐槽大会第一期">吐槽大会第一期</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/SJI1uTddu')"></div></div>
+          <p title="【创作学园】格斗游戏教程">【创作学园】格斗游戏教程</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/BJppd0jYP')"></div></div>
+          <p title="【创作小课堂】背包功能（简易版）">【创作小课堂】背包功能（简易版）</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/B1YGS8GXw')"></div></div>
+          <p title="【训练师投稿】再见了我的小鱼干">【训练师投稿】再见了我的小鱼干</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/H1IqyHr_U')"></div></div>
+          <p title="【NEMO试玩】给会编程的孩子一个火柴人后，神奇的事情发生了。">【NEMO试玩】给会编程的孩子一个火柴人后，神奇的事情发生了。</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/Hk0BdvrFI')"></div></div>
+          <p title="【NEMO试玩】会玩《推箱子》，你会做吗？">【NEMO试玩】会玩《推箱子》，你会做吗？</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/HJxMNIdPI')"></div></div>
+          <p title="【NEMO试玩】小黑格斗，决战紫禁之巅！">【NEMO试玩】小黑格斗，决战紫禁之巅！</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/r1e7C9Z7P8')"></div></div>
+          <p title="【NEMO试玩】警告，这个试玩视频不能告诉雷电猴！">【NEMO试玩】警告，这个试玩视频不能告诉雷电猴！</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/S1Nox7jU8')"></div></div>
+          <p title="【NEMO试玩】手残党永远成不了精致的豆腐女孩！">【NEMO试玩】手残党永远成不了精致的豆腐女孩！</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/HJ_6Y5BUU')"></div></div>
+          <p title="【NEMO试玩】宅在家里的小朋友，竟然这样对付病毒！">【NEMO试玩】宅在家里的小朋友，竟然这样对付病毒！</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/rJZIBTC2NU')"></div></div>
+          <p title="【庆祝】极客工作室一周年！！">【庆祝】极客工作室一周年！！</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/SJ0LON6zL')"></div></div>
+          <p title="火遍全网的程序员小哥哥教大家病毒传播的程序怎么写">火遍全网的程序员小哥哥教大家病毒传播的程序怎么写</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/rkx-eEYRhH')"></div></div>
+          <p title="【编程猫】【宣传】年度影响力很大的在线教育品牌！">【编程猫】【宣传】年度影响力很大的在线教育品牌！</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/Sye11QVRhS')"></div></div>
+          <p title="宇軒工作室一周年庆视频">宇軒工作室一周年庆视频</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/SkeYJVEAhS')"></div></div>
+          <p title="【编程教程】水果忍者手机游戏开发实战教程 附带素材">【编程教程】水果忍者手机游戏开发实战教程 附带素材</p>
+        </div>
+        <div class="work-card" onclick="window.location.href='https://shequ.codemao.cn/download?type=download'">
+          <div class="work-thumb"><div class="work-thumb-img" style="background-image:url('https://static.codemao.cn/whale/H1iUwKfjS')"></div></div>
+          <p title="地铁跑酷3000万分以后，接下来应该怎么做？[建议收藏]">地铁跑酷3000万分以后，接下来应该怎么做？[建议收藏]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var downloadNav = document.getElementById('downloadNavLink');
+      if (downloadNav) {
+        downloadNav.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.location.href = 'https://shequ.codemao.cn/download?type=download';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
