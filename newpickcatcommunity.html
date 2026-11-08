@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PICKCAT for Android</title>
+<meta name="description" content="Msajey 制作的 PICKCAT 安卓端 App，全站首发。功能完善，非官方，纯社区精神。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#181818; --surface:#1F1F1F; --surface-2:#272727; --border:#313131;
+    --text:#F2F2F2; --text-2:#B8B8B8; --text-3:#8A8A8A; --accent:#7C9CFF;
+    --radius-card:16px; --radius-inner:8px; --ease:cubic-bezier(0.22,1,0.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:"Geist","Manrope","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .container{width:min(1200px,calc(100% - 48px));margin:0 auto}
+
+  .heading-1{font-size:60px;line-height:60px;font-weight:600}
+  .heading-2{font-size:48px;line-height:48px;font-weight:600}
+  .heading-3{font-size:36px;line-height:40px;font-weight:600}
+  .title-2{font-size:18px;line-height:28px;font-weight:500}
+  .title-3{font-size:16px;line-height:24px;font-weight:500}
+  .body-3{font-size:16px;line-height:24px;font-weight:400}
+  .caption-2{font-size:14px;line-height:20px;font-weight:400;color:var(--text-3)}
+
+  .nav-wrap{position:sticky;top:12px;z-index:50;display:flex;justify-content:center;pointer-events:none}
+  .nav{pointer-events:auto;display:flex;align-items:center;gap:24px;padding:8px 12px;border-radius:9999px;background:rgba(31,31,31,.72);border:1px solid var(--border);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .nav .brand-link{display:flex;align-items:center;gap:8px}
+  .nav .brand-logo{height:24px;width:auto;display:block;border-radius:4px}
+  .nav a.link{font-size:14px;line-height:20px;font-weight:500;color:var(--text-2);padding:8px 12px;border-radius:9999px;transition:color .3s var(--ease),background .3s var(--ease)}
+  .nav a.link:hover{color:var(--text);background:var(--surface-2)}
+  .nav a.cta{font-size:14px;line-height:20px;font-weight:600;padding:8px 12px;border-radius:9999px;background:var(--accent);color:#0E0E0E;transition:transform .3s var(--ease),opacity .3s var(--ease)}
+  .nav a.cta:hover{opacity:.88}
+  .nav a.cta:active{transform:scale(.98)}
+
+  .hero{padding:96px 0 80px;text-align:center}
+  .hero h1{max-width:680px;margin:0 auto;background:linear-gradient(90deg,#FFFFFF,#9B9B9B);-webkit-background-clip:text;background-clip:text;color:transparent;text-wrap:balance}
+  .hero p{max-width:680px;margin:24px auto 0;color:var(--text-2);text-wrap:pretty}
+  .hero .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:8px;font-size:16px;line-height:24px;font-weight:600;transition:transform .3s var(--ease),opacity .3s var(--ease),background .3s var(--ease);cursor:pointer;border:none}
+  .btn:active{transform:scale(.98)}
+  .btn-primary{background:var(--accent);color:#0E0E0E}
+  .btn-primary:hover{opacity:.88}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .btn-ghost:hover{background:var(--surface-2)}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .proof{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:40px;color:var(--text-3)}
+  .proof span{font-size:14px;line-height:20px}
+
+  section.block{padding:80px 0}
+  .section-head{max-width:680px;margin-bottom:40px}
+  .section-head h2{text-wrap:balance}
+  .section-head p{margin-top:16px;color:var(--text-2);text-wrap:pretty}
+
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(2,1fr)}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-card);padding:24px;display:flex;flex-direction:column;gap:8px;transition:background .3s var(--ease),border-color .3s var(--ease)}
+  .card:hover{background:var(--surface-2);border-color:#3A3A3A}
+  .card .tag{align-self:flex-start;font-size:12px;line-height:16px;font-weight:500;padding:2px 8px;border-radius:4px;background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
+  .card p{color:var(--text-2);font-size:14px;line-height:20px}
+
+  .note{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-card);padding:24px;max-width:800px;margin:0 auto}
+  .note h3{margin-bottom:8px}
+  .note p{color:var(--text-2);font-size:14px;line-height:20px}
+  .note p + p{margin-top:8px}
+
+  .live{max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+  .skeleton{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-inner);padding:16px 24px}
+  .skeleton .bar{height:12px;border-radius:4px;background:var(--surface-2)}
+  .skeleton .bar + .bar{margin-top:8px;width:60%}
+  .live-error{display:none;background:var(--surface);border:1px solid #5A2A2A;border-radius:var(--radius-inner);padding:16px 24px;color:var(--text-2);font-size:14px;line-height:20px}
+  .live-empty{display:none;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-inner);padding:16px 24px;color:var(--text-2);font-size:14px;line-height:20px}
+
+  .tagline{padding:96px 0;text-align:center}
+  .tagline p{max-width:900px;margin:0 auto;text-wrap:balance}
+  .word{display:inline-block;opacity:.3;transition:opacity .5s var(--ease)}
+  .word.on{opacity:1}
+
+  .final{padding:96px 0 64px;text-align:center}
+  .final h2{max-width:680px;margin:0 auto;text-wrap:balance}
+  .final p{max-width:680px;margin:16px auto 0;color:var(--text-2)}
+  .download-wrap{margin-top:40px}
+  .btn-download{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:var(--accent);color:#0E0E0E;font-size:16px;line-height:24px;font-weight:600;transition:transform .3s var(--ease),opacity .3s var(--ease)}
+  .btn-download:hover{opacity:.88}
+  .btn-download:active{transform:scale(.98)}
+  .btn-download:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  .hint{margin-top:12px;font-size:12px;line-height:16px;color:var(--text-3)}
+
+  footer{border-top:1px solid var(--border);padding:32px 0;margin-top:32px}
+  footer .inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--text-3);font-size:14px;line-height:20px}
+  footer a{color:var(--text-3);transition:color .3s var(--ease)}
+  footer a:hover{color:var(--text)}
+
+  .reveal{opacity:0;transform:translateY(32px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  @media (max-width:640px){
+    .container{width:calc(100% - 32px)}
+    .heading-1{font-size:36px;line-height:40px}
+    .heading-2{font-size:30px;line-height:36px}
+    .heading-3{font-size:24px;line-height:32px}
+    .hero{padding:64px 0 48px}
+    section.block{padding:56px 0}
+    .nav{gap:8px;padding:8px}
+    .nav a.link{padding:8px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+    .word{opacity:1;transition:none}
+    .btn,.nav a,.card,.btn-download{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="nav-wrap">
+  <nav class="nav" aria-label="主导航">
+    <a class="brand-link" href="#" aria-label=" ">
+      <img class="brand-logo" src="https://pickcat.dao3.fun/images/brand/pickcat-logo-dark.png" alt="PICKCAT">
+    </a>
+    <a class="link" href="#features">功能</a>
+    <a class="link" href="#about">关于</a>
+    <a class="cta" href="#download">下载</a>
+  </nav>
+</div>
+
+<header class="hero">
+  <div class="container">
+    <h1 class="heading-1">PICKCAT 安卓 App<br>全站首发</h1>
+    <p class="body-3">由 Msajey 制作。功能完善，非官方，纯社区精神。把 PICKCAT 的创作、讨论和消息装进手机里。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#download">下载安卓 App</a>
+      <a class="btn btn-ghost" href="https://pickcat.dao3.fun">先看社区</a>
+    </div>
+    <div class="proof">
+      <span>Msajey 制作</span>
+      <span>全站首发</span>
+      <span>非官方 · 纯社区精神</span>
+    </div>
+  </div>
+</header>
+
+<section class="block" id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 class="heading-2">App 里有什么</h2>
+      <p class="body-3">不是套壳网页。浏览、发帖、消息、个人页，按手机习惯重新组织。</p>
+    </div>
+    <div class="grid">
+      <article class="card reveal">
+        <span class="tag">浏览</span>
+        <h3 class="title-2">信息流一屏读完</h3>
+        <p>帖子、回复数、浏览数直接展示，滑到底再加载下一页。</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag">发帖</span>
+        <h3 class="title-2">在手机上直接发</h3>
+        <p>写帖子、回评论、看消息，不用切回浏览器。</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag">消息</span>
+        <h3 class="title-2">回复和提醒集中处理</h3>
+        <p>有人回你、有人提到你，在一个地方看到。</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag">体验</span>
+        <h3 class="title-2">按安卓习惯做的界面</h3>
+        <p>深色界面、悬浮导航、滚动揭示，尊重系统减少动效设置。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="about">
+  <div class="container">
+    <div class="note reveal">
+      <h3 class="heading-3">非官方，纯社区精神</h3>
+      <p>这个 App 由 Msajey 个人制作，不是 PICKCAT 官方产品。做它的原因很简单：社区在手机上应该有更顺手的入口。</p>
+      <p>功能会持续更新，遇到问题可以直接在社区里找 Msajey。没有商业目的，也不收集多余数据。</p>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="live">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 class="heading-2">社区实时动态</h2>
+      <p class="body-3">通过公开 API 拉取首页推荐内容，展示社区现在正在被推荐的主题。</p>
+    </div>
+    <div class="live" id="liveList" aria-live="polite">
+      <div class="skeleton"><div class="bar"></div><div class="bar"></div></div>
+      <div class="skeleton"><div class="bar"></div><div class="bar"></div></div>
+    </div>
+    <div class="live-empty" id="liveEmpty">社区暂时没有推荐内容，可以直接去社区看。</div>
+    <div class="live-error" id="liveError">实时内容暂时加载失败，可以直接去社区看。</div>
+  </div>
+</section>
+
+<section class="tagline" aria-label="社区标语">
+  <div class="container">
+    <p class="heading-2" id="taglineText">你负责创作 社区负责看见 每一次尝试都算数</p>
+  </div>
+</section>
+
+<section class="final" id="download">
+  <div class="container">
+    <h2 class="heading-2 reveal">现在下载，把社区装进口袋</h2>
+    <p class="body-3 reveal">安卓端首发。点击下方按钮获取安装包。</p>
+    <div class="download-wrap reveal">
+      <a class="btn-download" href="https://msajey.github.io/msajey-blog/bcm.html">
+        下载安卓 App
+        <span aria-hidden="true">↓</span>
+      </a>
+      <p class="hint">点击后跳转到下载地址</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container inner">
+    <span>PICKCAT 安卓 App · Msajey 制作 · 非官方</span>
+    <span><a href="https://pickcat.dao3.fun">社区首页</a></span>
+  </div>
+</footer>
+
+<script>
+  const API_BASE = "https://pickcat.dao3.fun/api/v1";
+  const REC_URL = `${API_BASE}/topic-recommendations?sort=recommended&limit=20`;
+
+  // 滚动揭示
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach((el) => io.observe(el));
+  } else {
+    revealEls.forEach((el) => el.classList.add('in'));
+  }
+
+  // 大标语逐词激活
+  const tagline = document.getElementById('taglineText');
+  if (tagline) {
+    const words = tagline.textContent.trim().split(/\s+/);
+    tagline.innerHTML = words.map((w) => `<span class="word">${w}</span>`).join(' ');
+    const wordEls = tagline.querySelectorAll('.word');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { wordEls.forEach((w) => w.classList.add('on')); }
+    else if ('IntersectionObserver' in window) {
+      const wo = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('on'); wo.unobserve(entry.target); } });
+      }, { threshold: 1, rootMargin: '0px 0px -15% 0px' });
+      wordEls.forEach((w) => wo.observe(w));
+    } else { wordEls.forEach((w) => w.classList.add('on')); }
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function reasonLabel(reason) {
+    if (reason === 'PINNED') return '置顶';
+    if (reason === 'TRENDING') return '热门';
+    return '推荐';
+  }
+
+  async function loadLive() {
+    const list = document.getElementById('liveList');
+    const empty = document.getElementById('liveEmpty');
+    const err = document.getElementById('liveError');
+    try {
+      const res = await fetch(REC_URL, { headers: { 'Accept': 'application/json' } });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const items = Array.isArray(data.items) ? data.items : [];
+      if (!items.length) {
+        list.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+      list.innerHTML = items.slice(0, 8).map((item) => {
+        const title = escapeHtml(item.title || item.name || '未命名主题');
+        const reason = escapeHtml(reasonLabel(item.reason));
+        const summary = escapeHtml(item.excerpt || item.summary || item.description || '');
+        const id = item.id ? escapeHtml(item.id) : '';
+        const href = id ? `https://pickcat.dao3.fun/forum/post/${id}` : 'https://pickcat.dao3.fun';
+        return `
+          <a class="card" href="${href}" target="_blank" rel="noopener">
+            <span class="tag">${reason}</span>
+            <h3 class="title-2">${title}</h3>
+            ${summary ? `<p>${summary}</p>` : ''}
+          </a>`;
+      }).join('');
+    } catch (e) {
+      list.innerHTML = '';
+      err.style.display = 'block';
+      console.error('实时内容加载失败：', e);
+    }
+  }
+  loadLive();
+</script>
+</body>
+</html>
